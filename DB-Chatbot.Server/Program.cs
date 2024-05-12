@@ -48,7 +48,7 @@ using (var scope = app.Services.CreateScope())
 
     Seeder auxSeeder = new Seeder();
 
-    dbContext.Pessoas.AddRange(auxSeeder.GetPessoas(50));
+    dbContext.People.AddRange(auxSeeder.GetPeople(50));
     dbContext.Items.AddRange(auxSeeder.GetItems(300));
 }
 

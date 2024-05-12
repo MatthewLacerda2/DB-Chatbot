@@ -6,7 +6,7 @@ namespace Server.Data;
 public class ServerContext : DbContext
 {
 
-    public DbSet<Pessoa> Pessoas { get; set; } = default!;
+    public DbSet<Person> People { get; set; } = default!;
     public DbSet<Item> Items { get; set; } = default!;
 
     public ServerContext(DbContextOptions<ServerContext> options)

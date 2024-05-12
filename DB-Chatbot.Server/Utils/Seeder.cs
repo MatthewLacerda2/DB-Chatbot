@@ -6,20 +6,20 @@ namespace DB_Chatbot.Server.Utils;
 public class Seeder
 {
 
-    public Faker<Pessoa> PessoaFaker;
+    public Faker<Models.Person> PersonFaker;
     public Faker<Item> ItemFaker;
 
     public int bogusSeed = 777;
 
     public Seeder()
     {
-        PessoaFaker = GetPessoaFaker();
+        PersonFaker = GetPersonFaker();
         ItemFaker = GetItemFaker();
     }
 
-    Faker<Pessoa> GetPessoaFaker()
+    Faker<Models.Person> GetPersonFaker()
     {
-        Faker<Pessoa> pessoaFaker = new Faker<Pessoa>("pt-BR")
+        Faker<Models.Person> personFaker = new Faker<Models.Person>("pt-BR")
         .UseSeed(bogusSeed)
         .StrictMode(true)
 
@@ -27,7 +27,7 @@ public class Seeder
         .RuleFor(e => e.FullName, f => f.Person.FullName)
         .RuleFor(e => e.age, f => f.Random.Int(18, 64));
 
-        return pessoaFaker;
+        return personFaker;
     }
 
     Faker<Item> GetItemFaker()
@@ -37,7 +37,7 @@ public class Seeder
         .StrictMode(true)
 
         .RuleFor(e => e.Id, f => f.Random.Guid().ToString())
-        .RuleFor(e => e.PessoaId, "")
+        .RuleFor(e => e.PersonId, "")
         .RuleFor(e => e.Name, f => f.Commerce.Product())
         .RuleFor(e => e.Descricao, f => f.Commerce.ProductDescription())
         .RuleFor(e => e.Preço, f => f.Random.Float(20, 200));
@@ -45,9 +45,9 @@ public class Seeder
         return itemFaker;
     }
 
-    public Pessoa[] GetPessoas(int count)
+    public Models.Person[] GetPeople(int count)
     {
-        return PessoaFaker.Generate(count).ToArray();
+        return PersonFaker.Generate(count).ToArray();
     }
 
     public Item[] GetItems(int count)

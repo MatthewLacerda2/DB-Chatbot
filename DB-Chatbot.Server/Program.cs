@@ -1,4 +1,6 @@
+using DB_Chatbot.Server.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Server.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +11,15 @@ builder.Services.AddDbContext<ServerContext>(options =>
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo { Title = "DB-Chatbot API", Version = "1.0" });
+
+    var xmlFile = "DB-Chatbot.Server.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
@@ -30,5 +40,16 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+//Populate the DB
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ServerContext>();
+
+    Seeder auxSeeder = new Seeder();
+
+    dbContext.Pessoas.AddRange(auxSeeder.GetPessoas(50));
+    dbContext.Items.AddRange(auxSeeder.GetItems(300));
+}
 
 app.Run();

@@ -50,9 +50,9 @@ dist-ssr
 /frontend/node_modules/
 
 # .NET WebAPI specific rules
-/FixFlow.Server/Migrations/
-/FixFlow.Server/bin/
-/FixFlow.Server/obj/
+/DB-Chatbot.Server/Migrations/
+/DB-Chatbot.Server/bin/
+/DB-Chatbot.Server/obj/
 
 # .NET Core
 project.lock.json

@@ -2,11 +2,40 @@ using DB_Chatbot.Server.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Server.Data;
+using ChatAIze.GenerativeCS.Extensions;
+using ChatAIze.GenerativeCS.Options.Gemini;
+using ChatAIze.GenerativeCS.Constants;
+using ChatAIze.GenerativeCS.Models;
+using ChatAIze.GenerativeCS.Clients;
+using Server.Controllers;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ServerContext>(options =>
-    options.UseSqlite("Data Source=:memory:"));
+    options.UseSqlite("Data Source=:memory:")
+);
+
+var chatOpts = new ChatCompletionOptions
+{
+    Model = ChatCompletionModels.Gemini.GeminiPro,
+    MaxAttempts = 7,
+    CharacterLimit = 20000,
+    IsTimeAware = true,
+    DefaultFunctionCallback = async (name, arguments, cancellationToken) =>
+    {
+        await Console.Out.WriteLineAsync($"Function {name} called with arguments {arguments}");
+        return new { Success = true, Property1 = "ABC", Property2 = 123 };
+    },
+    TimeCallback = () => DateTime.Now
+};
+
+builder.Services.AddGeminiClient(configure =>
+{
+    configure.ApiKey = "<GEMINI API KEY>";
+    configure.DefaultCompletionOptions = chatOpts;
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -52,6 +81,16 @@ using (var scope = app.Services.CreateScope())
         {
             Console.WriteLine(p.ToString());
         }*/
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var pessoas = scope.ServiceProvider.GetRequiredService<PersonController>();
+
+    foreach (MethodInfo method in pessoas.GetType().GetMethods())
+    {
+
+    }
 }
 
 app.Run();

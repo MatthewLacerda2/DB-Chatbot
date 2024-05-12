@@ -19,7 +19,7 @@ public class Seeder
 
     Faker<Models.Person> GetPersonFaker()
     {
-        Faker<Models.Person> personFaker = new Faker<Models.Person>("pt-BR")
+        Faker<Models.Person> personFaker = new Faker<Models.Person>()
         .UseSeed(bogusSeed)
         .StrictMode(true)
 
@@ -32,7 +32,7 @@ public class Seeder
 
     Faker<Item> GetItemFaker()
     {
-        Faker<Item> itemFaker = new Faker<Item>("pt-BR")
+        Faker<Item> itemFaker = new Faker<Item>()
         .UseSeed(bogusSeed)
         .StrictMode(true)
 

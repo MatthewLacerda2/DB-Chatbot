@@ -14,11 +14,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.SwaggerDoc("v1", new OpenApiInfo { Title = "DB-Chatbot API", Version = "1.0" });
-
-    var xmlFile = "DB-Chatbot.Server.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-    options.IncludeXmlComments(xmlPath);
 });
 
 var app = builder.Build();

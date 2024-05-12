@@ -37,10 +37,10 @@ public class Seeder
         .StrictMode(true)
 
         .RuleFor(e => e.Id, f => f.Random.Guid().ToString())
-        .RuleFor(e => e.PersonId, "")
+        .RuleFor(e => e.PersonId, string.Empty)
         .RuleFor(e => e.Name, f => f.Commerce.Product())
         .RuleFor(e => e.Descricao, f => f.Commerce.ProductDescription())
-        .RuleFor(e => e.Preço, f => f.Random.Float(20, 200));
+        .RuleFor(e => e.preco, f => f.Random.Float(20, 200));
 
         return itemFaker;
     }

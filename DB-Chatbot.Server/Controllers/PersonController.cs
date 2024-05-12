@@ -20,13 +20,13 @@ public class PersonController : ControllerBase
     /// Get a Person by the given Id
     /// </summary>
     /// <param name="Id">The Person's Id</param>
-    /// <returns>AptLog</returns>
+    /// <returns>Person</returns>
     /// <response code="200">The Person with the given Id</response>
     /// <response code="404">There was no Person with the given Id</response>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Person))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(string))]
     [HttpGet("{Id}")]
-    public async Task<ActionResult> GetPerson(string id)
+    public async Task<ActionResult> ReadPerson(string id)
     {
         var person = await _context.People.FindAsync(id);
         if (person == null)
@@ -53,7 +53,7 @@ public class PersonController : ControllerBase
     /// <response code="200">Returns an array of Person</response>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<Person[]>))]
     [HttpGet]
-    public IActionResult ReadLogs(string? name, float? minAge, float? maxAge,
+    public IActionResult ReadPeople(string? name, float? minAge, float? maxAge,
                                     string? sort, int? offset, int? limit)
     {
 
@@ -107,7 +107,7 @@ public class PersonController : ControllerBase
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(Person))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [HttpPost]
-    public async Task<IActionResult> CreateLog([FromBody] Person newPerson)
+    public async Task<IActionResult> CreatePerson([FromBody] Person newPerson)
     {
 
         newPerson.Id = Guid.NewGuid().ToString();
@@ -115,7 +115,7 @@ public class PersonController : ControllerBase
         _context.People.Add(newPerson);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(CreateLog), newPerson);
+        return CreatedAtAction(nameof(CreatePerson), newPerson);
     }
 
     /// <summary>
@@ -127,7 +127,7 @@ public class PersonController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Person))]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(string))]
     [HttpPut]
-    public async Task<IActionResult> UpdateLog([FromBody] Person uPerson)
+    public async Task<IActionResult> UpdatePerson([FromBody] Person uPerson)
     {
 
         var existingPerson = _context.People.Find(uPerson.Id);
@@ -157,7 +157,7 @@ public class PersonController : ControllerBase
     [HttpDelete("{Id}")]
     public async Task<IActionResult> DeletePerson(string id)
     {
-        var person = await _context.People.FindAsync(id);
+        var person = _context.People.Find(id);
         if (person == null)
         {
             return NotFound("Person does not exist");

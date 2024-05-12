@@ -11,5 +11,5 @@ public class Item
 
     public string Name { get; set; } = string.Empty;
     public string Descricao { get; set; } = string.Empty;
-    public float Preço { get; set; } = 20;
+    public float preco { get; set; } = 20;
 }

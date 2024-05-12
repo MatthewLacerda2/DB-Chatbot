@@ -14,9 +14,21 @@ public class ServerContext : DbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<Person>().ToTable("People");
+        builder.Entity<Item>().ToTable("Items");
+
+        //FlowSeeder flowSeeder = new FlowSeeder(builder, 777);
+    }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder.UseSqlite("Data Source=:memory:");
     }
 
 }

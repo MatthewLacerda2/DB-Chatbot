@@ -1,3 +1,4 @@
+using DB_Chatbot.Server.Models;
 using DB_Chatbot.Server.Utils;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -45,6 +46,13 @@ using (var scope = app.Services.CreateScope())
 
     dbContext.People.AddRange(auxSeeder.GetPeople(50));
     dbContext.Items.AddRange(auxSeeder.GetItems(300));
+    /*
+        Person[] p = dbContext.People.Take(10).ToArray();
+
+        for (int i = 0; i < 10; i++)
+        {
+            Console.WriteLine(p.ToString());
+        }*/
 }
 
 app.Run();

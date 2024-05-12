@@ -6,7 +6,9 @@ interface Message {
 
 const ChatInterface: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([
-    { text: "Hi, I am Drake Bell, your DB Chatbot for CRUD requests" },
+    {
+      text: "Ola, eu sou Drake.Bell, seu Chatbot para operações CRUD. Como posso ajudar ??",
+    },
   ]);
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
@@ -17,6 +19,7 @@ const ChatInterface: React.FC = () => {
 
     setMessages([...messages, { text: ". . ." }]);
     setLoading(true);
+    //openapi -i ..\..\FixFlow.Server\swagger.json -o FlowApi -c axios
 
     // Simulate delay for accessing database
     await new Promise((resolve) => setTimeout(resolve, 1500));

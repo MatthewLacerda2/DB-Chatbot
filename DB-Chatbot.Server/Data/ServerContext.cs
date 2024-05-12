@@ -12,6 +12,8 @@ public class ServerContext : DbContext
     public ServerContext(DbContextOptions<ServerContext> options)
         : base(options)
     {
+        Database.EnsureCreated();
+        Database.OpenConnection();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)

@@ -10,8 +10,16 @@ using ChatAIze.GenerativeCS.Clients;
 using Server.Controllers;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System.Reflection;
+using Microsoft.Data.Sqlite;
+using DB_Chatbot.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString = new SqliteConnectionStringBuilder
+{
+    DataSource = ":memory:"
+};
+var connection = new SqliteConnection(connectionString.ToString());
 
 builder.Services.AddDbContext<ServerContext>(options =>
     options.UseSqlite("Data Source=:memory:")
@@ -64,33 +72,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
-
-//Populate the DB
-using (var scope = app.Services.CreateScope())
-{
-    var dbContext = scope.ServiceProvider.GetRequiredService<ServerContext>();
-
-    Seeder auxSeeder = new Seeder();
-
-    //dbContext.People.AddRange(auxSeeder.GetPeople(50));
-    dbContext.Items.AddRange(auxSeeder.GetItems(300));
-    /*
-        Person[] p = dbContext.People.Take(10).ToArray();
-
-        for (int i = 0; i < 10; i++)
-        {
-            Console.WriteLine(p.ToString());
-        }*/
-}
-
-using (var scope = app.Services.CreateScope())
-{
-    var pessoas = scope.ServiceProvider.GetRequiredService<PersonController>();
-
-    foreach (MethodInfo method in pessoas.GetType().GetMethods())
-    {
-
-    }
-}
 
 app.Run();

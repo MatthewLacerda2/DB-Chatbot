@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using DB_Chatbot.Server.Models;
+using Microsoft.Data.Sqlite;
+using DB_Chatbot.Server.Utils;
 
 namespace Server.Data;
 
@@ -12,8 +14,8 @@ public class ServerContext : DbContext
     public ServerContext(DbContextOptions<ServerContext> options)
         : base(options)
     {
-        Database.EnsureCreated();
         Database.OpenConnection();
+        Database.EnsureCreated();
     }
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -23,7 +25,10 @@ public class ServerContext : DbContext
         builder.Entity<Person>().ToTable("People");
         builder.Entity<Item>().ToTable("Items");
 
-        //FlowSeeder flowSeeder = new FlowSeeder(builder, 777);
+        Seeder seeder = new Seeder();
+
+        builder.Entity<Person>().HasData(seeder.GetPeople(50));
+        builder.Entity<Item>().HasData(seeder.GetItems(50));
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
